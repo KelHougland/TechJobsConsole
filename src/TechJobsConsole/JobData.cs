@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 
 namespace TechJobsConsole
 {
@@ -49,7 +50,7 @@ namespace TechJobsConsole
             {
                 string aValue = row[column];
 
-                if (aValue.Contains(value))
+                if (aValue.ToLower().Contains(value.ToLower()))
                 {
                     jobs.Add(row);
                 }
@@ -57,6 +58,38 @@ namespace TechJobsConsole
 
             return jobs;
         }
+
+        public static List<Dictionary<string,string>> FindByValue(string value)
+        {
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+
+            foreach (Dictionary<string, string> job in AllJobs)
+            {
+
+                if (job.Values.Any(v => v.ToLower().Contains(value.ToLower())))
+                {
+                    jobs.Add(job);
+                }
+
+                // made it search through a constructed string
+                //string row_vals = "";
+                
+                //foreach (KeyValuePair<string,string> entry in job){
+                //    row_vals += entry.Value;
+                //}
+
+                //if (row_vals.Contains(value))
+                //{
+                //    jobs.Add(job);
+                //}
+            }
+
+
+            return jobs;
+        }
+
 
         /*
          * Load and parse data from job_data.csv
